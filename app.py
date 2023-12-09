@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import base64
+import os
+import requests
 
 app = Flask(__name__)
 
@@ -11,16 +13,44 @@ def index():
 @app.route('/upload', methods=['POST'])
 
 
+@app.route('/upload', methods=['POST'])
 def upload_image():
-    data = request.get_json()  # Get JSON data
-    image_data = data['image']  # Access the image data
+    data = request.get_json()
+    image_data = data['image']
 
-    # Optional: Decode the image if you need to process it
-    # image_data = image_data.split(",")[1]  # Remove the base64 header
-    # image_bytes = base64.b64decode(image_data)
+    # OpenAI API Key
+    api_key = os.environ.get('OPENAI_API_KEY')
 
-    # Code to handle image and send it to GPT-4 vision model
-    return jsonify({'message': 'Image received', 'size': len(image_data)})
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    payload = {
+        "model": "gpt-4-vision-preview",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Write an effusive poem about any individual seen in the image. Make it endearing and relatable. Use simple language."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{image_data}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 300
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+    
+    return jsonify(response.json())
 
 if __name__ == '__main__':
     app.run(debug=True)

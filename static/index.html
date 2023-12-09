@@ -5,10 +5,16 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
-    <div id="camera">
-        <video id="video" width="640" height="480" autoplay></video>
-        <button id="capture">Capture</button>
-        <canvas id="canvas" width="640" height="480"></canvas>
+    <div class="container">
+        <div id="camera">
+            <video id="video" width="640" height="480" autoplay></video>
+            <button id="capture">Capture</button>
+            <canvas id="canvas" width="640" height="480"></canvas>
+        </div>
+        <div id="ai-analysis">
+            <h3>What does AI think of you?</h3>
+            <div id="response"></div>
+        </div>
     </div>
     <script src="/static/script.js"></script>
 </body>
