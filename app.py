@@ -1,11 +1,16 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, send_from_directory
 import base64
 
 app = Flask(__name__)
-CORS(app)
 
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+
+# Your existing /upload route
 @app.route('/upload', methods=['POST'])
+
+
 def upload_image():
     data = request.get_json()  # Get JSON data
     image_data = data['image']  # Access the image data
