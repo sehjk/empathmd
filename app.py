@@ -34,7 +34,7 @@ def upload_image():
                 "content": [
                     {
                         "type": "text",
-                        "text": "Write an effusive poem about any individual seen in the image. Make it endearing and relatable. Use simple language."
+                        "text": "Here's a picture of a person. Describe the posture and their facial expressions, briefly."
                     },
                     {
                         "type": "image_url",

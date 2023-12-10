@@ -10,7 +10,7 @@
 }
 
 #canvas {
-    width: 320px; /* Half size of the video */
+    width: 320px; 
     height: 240px;
     margin-top: 20px;
 }
