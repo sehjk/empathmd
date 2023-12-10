@@ -1,19 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Webcam Capture</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmpathMD Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
-<body>
-    <div class="container">
-        <div id="camera">
-            <video id="video" width="640" height="480" autoplay></video>
-            <button id="capture">Capture</button>
-            <canvas id="canvas" width="640" height="480"></canvas>
-        </div>
-        <div id="ai-analysis">
-            <h3>What does AI think of you?</h3>
-            <div id="response"></div>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-6">
+        <header class="flex justify-between items-center border-b-2 border-gray-200 pb-4 mb-4">
+            <h1 class="text-3xl font-bold">EmpathMD</h1>
+            <nav>
+                <a href="#" class="text-gray-600 hover:text-gray-800 px-4">History</a>
+            </nav>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="col-span-1">
+                <div class="bg-white shadow rounded p-4">
+                    <h2 class="text-xl font-semibold mb-4">Choose simulation:</h2>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button class="simulation-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cancer diagnosis</button>
+                        <button class="simulation-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded active">Diabetes Diagnosis</button>
+                        <button class="simulation-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">ADHD management</button>
+                    </div>
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">Start</button>
+                </div>
+                <div class="bg-white shadow rounded p-4 mt-4">
+                    <h2 class="text-xl font-semibold mb-4">Live AI Feedback</h2>
+                    <div class="feedback" id="response"></div>
+                </div>
+            </div>
+
+            <div class="col-span-2">
+                <div class="bg-white shadow rounded p-4 flex gap-4">
+                    <div class="w-1/2">
+                        <h2 class="text-xl font-semibold mb-2">Doctor Video</h2>
+                        <div id="camera">
+                            <video id="video" width="640" height="480" autoplay></video>
+                            <button id="capture">Capture</button>
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <h2 class="text-xl font-semibold mb-2">Patient Video</h2>
+                        <div id="camera">
+                            <canvas id="canvas" width="640" height="480"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white shadow rounded p-4 mt-4">
+                    <h2 class="text-xl font-semibold mb-4">Chat with GPT model simulating a patient in a scenario</h2>
+                    <div class="flex flex-col">
+                        <div class="chat-message patient">
+                            <p><strong>P:</strong> I just don't think my ADHD will ever be managed.</p>
+                            <p class="text-gray-500 text-sm">10:02 AM</p>
+                        </div>
+                        <div class="chat-message doctor">
+                            <p><strong>D:</strong> It is not a tough diagnosis to manage.</p>
+                            <p class="text-gray-500 text-sm">10:15 AM</p>
+                        </div>
+                        <div class="chat-message patient">
+                            <p><strong>P:</strong> That just doesn't sync with my own experience.</p>
+                            <p class="text-gray-500 text-sm">10:02 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="/static/script.js"></script>
