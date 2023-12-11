@@ -23,10 +23,21 @@ captureButton.addEventListener('click', function() {
 function sendMessageToChat() {
     const messageInput = document.getElementById('chat-message-input');
     const message = messageInput.value;
-    messageInput.value = ''; // Clear input field after sending
+    messageInput.value = '';
 
-    // Add message to chat window
     addToChatWindow('You', message);
+
+    // Create an EventSource
+    const eventSource = new EventSource('/chat');
+
+    eventSource.onmessage = function(event) {
+        addToChatWindow('GPT', event.data);
+    };
+
+    eventSource.onerror = function() {
+        console.error('EventSource failed.');
+        eventSource.close();
+    };
 
     fetch('/chat', {
         method: 'POST',
@@ -35,15 +46,12 @@ function sendMessageToChat() {
         },
         body: JSON.stringify({ message: message })
     })
-    .then(response => response.json())
-    .then(data => {
-        const gptResponse = data.response;
-        addToChatWindow('GPT', gptResponse);
-    })
     .catch(error => {
         console.error('Error:', error);
+        eventSource.close();
     });
 }
+
 
 function addToChatWindow(speaker, message) {
     const chatWindow = document.getElementById('chat-window');

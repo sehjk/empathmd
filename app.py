@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
 import base64
-import os
 import requests
+import json
+import os
 
 app = Flask(__name__)
 
@@ -31,16 +32,27 @@ def chat_with_gpt():
 
     payload = {
         "model": "gpt-4-1106-preview",  # Adjust the model name as needed
-        "messages": chat_history
+        "messages": chat_history,
+        "stream": True
     }
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
     
-    # Extract the assistant's response and append it to the chat history
-    assistant_response = response.json()['choices'][0]['message']['content']
-    chat_history.append({"role": "assistant", "content": assistant_response})
+    def generate():
+        for chunk in response.iter_content(chunk_size=None):  # None means it will stream as the data comes in
+            if chunk:
+                json_chunk = json.loads(chunk)
+                assistant_response = json_chunk['choices'][0]['message']['content']
+                yield f"data:{assistant_response}\n\n"
     
-    return jsonify({"response": assistant_response})
+    return Response(generate(), content_type='text/event-stream')
+
+    
+    # Extract the assistant's response and append it to the chat history
+    #assistant_response = response.json()['choices'][0]['message']['content']
+    #chat_history.append({"role": "assistant", "content": assistant_response})
+    
+    #return jsonify({"response": assistant_response})
 
 
 @app.route('/upload', methods=['POST'])
