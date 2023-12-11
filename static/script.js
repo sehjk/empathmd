@@ -19,6 +19,40 @@ captureButton.addEventListener('click', function() {
     sendImageToServer(image);
 });
 
+
+function sendMessageToChat() {
+    const messageInput = document.getElementById('chat-message-input');
+    const message = messageInput.value;
+    messageInput.value = ''; // Clear input field after sending
+
+    // Add message to chat window
+    addToChatWindow('You', message);
+
+    fetch('/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const gptResponse = data.response;
+        addToChatWindow('GPT', gptResponse);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function addToChatWindow(speaker, message) {
+    const chatWindow = document.getElementById('chat-window');
+    const newMessageDiv = document.createElement('div');
+    newMessageDiv.className = speaker === 'You' ? 'chat-message doctor' : 'chat-message patient';
+    newMessageDiv.innerHTML = `<p><strong>${speaker}:</strong> ${message}</p>`;
+    chatWindow.appendChild(newMessageDiv);
+}
+
 function sendImageToServer(imageData) {
     const base64Image = imageData.split(',')[1];
 
@@ -45,3 +79,5 @@ function displayResponse(data) {
     // Modify as needed based on the actual structure of the response
     responseElement.textContent = data.choices[0].message.content;  // Or any other field from the response
 }
+
+

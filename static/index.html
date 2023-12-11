@@ -51,19 +51,15 @@
                     </div>
                 </div>
                 <div class="bg-white shadow rounded p-4 mt-4">
-                    <h2 class="text-xl font-semibold mb-4">Chat with GPT model simulating a patient in a scenario</h2>
+                    <h2 class="text-xl font-semibold mb-4">Chat with simulated patient</h2>
                     <div class="flex flex-col">
-                        <div class="chat-message patient">
-                            <p><strong>P:</strong> I just don't think my ADHD will ever be managed.</p>
-                            <p class="text-gray-500 text-sm">10:02 AM</p>
+                        <div id="chat-window" class="mb-4">
+                            <!-- Dynamic messages will be appended here -->
                         </div>
-                        <div class="chat-message doctor">
-                            <p><strong>D:</strong> It is not a tough diagnosis to manage.</p>
-                            <p class="text-gray-500 text-sm">10:15 AM</p>
-                        </div>
-                        <div class="chat-message patient">
-                            <p><strong>P:</strong> That just doesn't sync with my own experience.</p>
-                            <p class="text-gray-500 text-sm">10:02 AM</p>
+                        <!-- Chat Input and Send Button -->
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-message-input" class="border rounded p-2 w-full" placeholder="Type your message here...">
+                            <button onclick="sendMessageToChat()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send</button>
                         </div>
                     </div>
                 </div>
